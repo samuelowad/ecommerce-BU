@@ -1,0 +1,47 @@
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Add Product</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="#">Admin<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/add-product"> Add Product</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Tracking Box Area =================-->
+<section class="tracking_box_area section_gap">
+    <div class="container">
+        <div class="tracking_box_inner">
+            {{#if errorMessage}}
+            <div class="error">{{errorMessage}} </div>
+            {{/if}}
+            <p>To Add products</p>
+            <form class="row tracking_form" action="/admin/{{#if editing}}edit-product{{else}}add-product{{/if}}" method="POST" novalidate="novalidate" enctype="multipart/form-data">
+                <div class="col-md-12 form-group">
+                    <input type="text" class="form-control" id="order" name="title" placeholder="Prooduct name" onfocus="this.placeholder = 'add products here'" value="{{#if editing}}{{product.title}}{{/if}}{{#if hasError}}{{product.title}}{{/if}}">
+                </div>
+                <div class="col-md-12 form-group">
+                    <input type="file" class="form-control" id="image" name="image" placeholder="image" onfocus="this.placeholder = 'image'">
+                </div>
+                <div class="col-md-12 form-group">
+                    <input type="number" class="form-control" id="price" name="price" step="0.01" placeholder="price" onfocus="this.placeholder = 'add price here'" value="{{#if editing}}{{product.price}}{{/if}}{{#if hasError}}{{product.price}}{{/if}}">
+                </div>
+                <div class="col-md-12 form-group">
+
+                    <textarea name="description" class="form-control" placeholder="Description" onfocus="this.placeholder = 'add des here'" id="description" rows="10">{{#if editing}}{{product.description}}{{/if}}{{#if hasError}}{{product.description}}{{/if}}</textarea>
+                </div>
+                {{#if editing}}<input type="hidden" value="{{product._id}}" name="productId">{{/if}}
+                <div class="col-md-12 form-group">
+                    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                    <button type="submit" value="submit" class="primary-btn">{{#if editing}}Update Product{{else}}Add product{{/if}} </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
