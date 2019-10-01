@@ -1,26 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const {
-    check,
-    body
-} = require('express-validator/check');
-
+const {check, body } = require('express-validator/check');
 const User = require('../model/user');
-
-
-
-
-
 const authController = require('../controller/auth');
 
 
 router.get('/login', authController.getLogin)
 
-router.post('/login', [body('email').isEmail().withMessage('Please enter a valid email').normalizeEmail(),
-    body('password', 'Please enter a password with minimum of 5 characters.').isLength({
-        min: 5
-    }).trim()
-], authController.postLogin)
+router.post('/login', [
+  body('email').isEmail().withMessage('Please enter a valid email').normalizeEmail(),
+  body('password', 'Please enter a password with minimum of 5 characters.').isLength({min: 5}).trim()
+], authController.postLogin );
+
+
 router.post('/logout', authController.postLogout)
 router.get('/register', authController.getRegister);
 router.post('/register', [check('email').isEmail().withMessage('Please enter a valid email').custom((value, {
