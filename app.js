@@ -13,8 +13,9 @@ const bodyParser = require('body-parser');
 const adminRoute = require('./routes/admin');
 const shopRoute = require('./routes/shop');
 const auth = require('./routes/auth');
+const port = 3000;
 
-const mongoConnect = require('./util/database').mongoConnect;
+// const mongoConnect = require('./util/database').mongoConnect;
 const User = require('./model/user');
 const app = express();
 
@@ -24,11 +25,11 @@ const app = express();
 
 const MONGODB_URI = 'mongodb://localhost:27017/shopTest11'
 
-
-const store = new mongodbStore({
-    uri: MONGODB_URI,
-    collection: 'sessions'
-});
+//
+// const store = new mongodbStore({
+//     uri: MONGODB_URI,
+//     collection: 'sessions'
+// });
 
 // const csrfProtection = csrf();
 
@@ -47,6 +48,8 @@ const fileFilter = (req, file, cb) => {
         cb(null, false)
     }
 };
+
+
 app.engine('hbs', exphbs({
     defaultLayout: 'main-layout',
     layoutsDir: 'views/layouts/',
@@ -58,6 +61,7 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+
 app.use(multer({
     storage: fileStorage,
     fileFilter: fileFilter
@@ -69,7 +73,7 @@ app.use(session({
     secret: 'secret session cookie',
     resave: false,
     saveUninitialized: false,
-    store: store
+    // store: store
 }));
 
 // app.use(csrfProtection);
@@ -115,8 +119,7 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
-    // res.status(error.httpStatusCode).render(...);
-    // res.redirect('/500');
+
     res.status(500).render('500', {
         pageTitle: 'Error!',
         path: '/500',
@@ -124,30 +127,16 @@ app.use((error, req, res, next) => {
     });
 });
 
-const port = 3000
 
 
 mongoose.connect(MONGODB_URI)
     .then(result => {
-
-        /////DUMMY USER///
-        // User.findOne().then(user => {
-        //     if (!user) {
-        //         const user = new User({
-        //             name: 'Samuel Owad',
-        //             email: 'admin@shop.com',
-        //             cart: {
-        //                 items: []
-        //             }
-        //         });
-        //         user.save();
-        //     }
-        // })
-
-
-        app.listen(port);
         console.log('connected')
     })
     .catch(err => {
         console.log(err)
     })
+
+
+app.listen(port);
+console.log(`Server started on ${port}`);
